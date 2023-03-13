@@ -183,12 +183,27 @@ def generate_room_records( rooms ):
 
     created_date = fake.date_this_decade()
 
+    length = len( str( rooms ) )
     for i in range( rooms ):
         room_record = { 
-            'room_id': 'room_' + str( uuid.uuid4().hex ),
+            'room_id': 'room_' + str( i + 1 ).zfill( length ),
+            'type': random.choice( [ 'Standard', 'Deluxe', 'Suite' ] ),
+            'description': random.choice( [ 'Standard', 'Deluxe', 'Suite' ] ),
+            'occupancy': random.choice( [ 'Single', 'Double' ] ),
+            'image_urls': get_image_urls( 10 )
             }   
         yield room_record
 
+def get_image_urls( num ):
+    iurls = []
+    for i in range( num ):
+        fake = Faker(i)
+        iurl = fake.image_url()
+        while "placekitten" not in iurl:
+            iurl = fake.image_url()
+        iurls.append(iurl)
+    return iurls
+   
 def generate_bill_records( bills ):
     # Create a Faker instance to generate fake data
     fake = Faker()
